@@ -1,0 +1,28 @@
+{
+  "name": "my-finance-analyzer",
+  "version": "1.0.0",
+  "description": "Managing finance expenses",
+  "main": "index.js",
+  "scripts": {
+    "start":"node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PalashSantra/my-finance-analyzer.git"
+  },
+  "author": "Palash Santra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PalashSantra/my-finance-analyzer/issues"
+  },
+  "homepage": "https://github.com/PalashSantra/my-finance-analyzer#readme",
+  "dependencies": {
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.4",
+    "validatorjs": "^3.22.1",
+    "bcryptjs": "^2.4.3"
+  }
+}
