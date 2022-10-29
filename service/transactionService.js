@@ -88,11 +88,35 @@ const listData = async (req, res) => {
             message: 'Something went wrong'
         })
     }
+}
 
-
+const getData = async (req, res) => {
+    try {
+        const tran_id = req.params.tran_id
+        if(!tran_id){
+            return res.status(422).json({
+                status: 'error',
+                message: 'Input is not good'
+            })
+        }
+        const details = await Transaction
+                            .find({"_id":tran_id})
+        return res.status(200).json({
+            status: 'success',
+            message: 'transaction details fetched',
+            result: details
+        })
+    } catch (e) {
+        console.log('transaction details fetching failed', e)
+        return res.status(500).json({
+            status: 'error',
+            message: 'Something went wrong'
+        })
+    }
 }
 
 module.exports = {
     saveData,
-    listData
+    listData,
+    getData
 }

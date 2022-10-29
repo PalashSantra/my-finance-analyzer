@@ -20,6 +20,7 @@ router.post('/logout', userService.logout)
 
 router.post('/transaction/save', authenticate ,transactionService.saveData)
 router.post('/transaction/list', authenticate ,transactionService.listData)
+router.get('/transaction/:tran_id', authenticate ,transactionService.getData)
 
 router.post('/ledger/save', authenticate ,ledgerService.saveData)
 router.post('/ledger/list', authenticate ,ledgerService.listData)
