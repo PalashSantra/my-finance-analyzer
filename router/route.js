@@ -15,7 +15,7 @@ router.get('/health', (req,res)=>{
     }
 })
 router.post('/user/register', userService.register)
-router.post('/login', userService.login)
+router.post('/loginMe', userService.login)
 router.post('/logout', userService.logout)
 
 router.post('/transaction/save', authenticate ,transactionService.saveData)

@@ -79,14 +79,14 @@ const login = async (req,res) =>{
                     token:convertToBase64(token)
                 })
             }else{
-                return res.status(400).json({
+                return res.status(200).json({
                     status:'error',
                     message:'Credential not matched'
                 })
             }
             }
             else{
-                return res.status(400).json({
+                return res.status(200).json({
                     status:'error',
                     message:'Credential not matched'
                 })
