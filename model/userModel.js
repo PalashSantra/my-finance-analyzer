@@ -45,7 +45,25 @@ schema.pre('save', async function(next){
 
 schema.methods.generateAuthToken = async function(){
     try{
-        let token = await jwt.sign({_id:this._id,expiry:new Date(Date.now()+(process.env.TOKEN_TIMEOUT))},process.env.SECRET)
+        let token = await jwt.sign({_id:this._id,expiry:new Date(Date.now()+(Number(process.env.TOKEN_TIMEOUT)))},process.env.SECRET)
+        return new Promise((resolve,reject)=>{
+            if(token){
+                resolve(token)
+            }
+            else{
+                reject(token)
+            }
+        })
+    }
+    catch(e){
+        console.log('Token creation failed',e)
+        throw e
+    }
+}
+
+schema.methods.generateRefreshToken = async function(){
+    try{
+        let token = await jwt.sign({_id:this._id,expiry:new Date(Date.now()+(Number(process.env.REFRESH_TOKEN_TIMEOUT)))},process.env.REFRESH_TOKEN_SECRET)
         return new Promise((resolve,reject)=>{
             if(token){
                 resolve(token)
