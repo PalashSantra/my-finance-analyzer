@@ -54,6 +54,32 @@ const refreshAuthToken = async (req,res) => {
     }
 }
 
+const validateAuthToken = async (req,res) => {
+    try{
+        const encodedToken = req.headers.authorization.replace('Bearer ','')
+        const decodedToken = convertFromBase64(encodedToken)
+        isVerified = await jwt.verify(decodedToken,process.env.SECRET)
+        if((Date.parse(isVerified.expiry)-new Date(Date.now()))<0){
+            return res.status(200).json({
+                status:'error',
+                message:'Token expired'
+            })
+        }
+        else{
+            return res.status(200).json({
+                status:'success',
+                message:'Successfully token validated',
+            })
+        }
+    }catch(e){
+        console.log('Token validation failed',e)
+        return res.status(500).json({
+            status:'error',
+            message:'Bad Token'
+        })
+    }
+}
+
 const generateAuthToken = async function(_id){
     try{
         let token = await jwt.sign({_id:_id,expiry:new Date(Date.now()+Number(process.env.TOKEN_TIMEOUT))},process.env.SECRET)
@@ -72,4 +98,4 @@ const generateAuthToken = async function(_id){
     }
 }
 
-module.exports = {authenticate,refreshAuthToken}
+module.exports = {authenticate,refreshAuthToken, validateAuthToken}

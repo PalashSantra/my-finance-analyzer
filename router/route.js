@@ -4,6 +4,7 @@ const transactionService = require('../service/transactionService')
 const ledgerService = require('../service/ledgerService')
 const authenticate = require('../service/authService').authenticate
 const refreshAuthToken = require('../service/authService').refreshAuthToken
+const validateAuthToken = require('../service/authService').validateAuthToken
 
 const router = express.Router()
 
@@ -18,6 +19,7 @@ router.get('/health', (req,res)=>{
 router.post('/user/register', userService.register)
 router.post('/loginMe', userService.login)
 router.post('/logout', userService.logout)
+router.post('/validateToken', validateAuthToken)
 router.post('/refreshToken', refreshAuthToken)
 
 router.post('/transaction/save', authenticate ,transactionService.saveData)

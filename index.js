@@ -20,9 +20,9 @@ app.use((req, res, next) => {
     else if(process.env.PROFILE && process.env.PROFILE==='PROD')
         url=process.env.PROD_URL
     if(url){
-        res.setHeader('Access-Control-Allow-Origin', url);
-        res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
-        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,Authorization,refreshtoken');
         res.setHeader('Access-Control-Allow-Credentials', true);
     }
     next();
