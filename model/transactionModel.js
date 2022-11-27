@@ -3,14 +3,20 @@ const mongoose = require('mongoose')
 const typeSchema = new mongoose.Schema({
     cat1:{
         type:String,
-        enum:['Secured','Insurance','Mutual Fund','Stocks','Crypto'],
+        enum:['Savings','Current','Salary','International',
+        'Free','Chargeable',
+        'Secured','Insurance','Mutual Fund','Stocks','Crypto',
+        'Co-latteral','Non-co-latteral',
+        'Cash-in-hand',''],
         required:false
     },
     cat2:{
         type:String,
-        enum:['PPF','Gold Bond','Gold','SSS','NSS','KVP','SCS','RBI Bond','FD','Recurring','NPS','TB',
-                'Term','Savings','Health','Car','Bike','House','Appliances',
-                'ELSS','ELC','EMC','ESC','EB','Debt','Sectoral'],
+        enum:['PPF','Gold Bond','SSS','NSS','KVP','SCS','RBI Bond','FD','Recurring','NPS','TB',
+        'Term','Health','Car','Bike','Life','Appliances',
+        'ELSS','ELC','EMC','ESC','EB','Debt','Sectoral',
+        'House','Car','Bike','Consumer-Durable','Gold',
+        'Personal','Credit Card Loan','Credit EMI','Outside Loan',''],
         required:false
     }
 })
