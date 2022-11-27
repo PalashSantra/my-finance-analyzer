@@ -68,25 +68,24 @@ const login = async (req,res) =>{
             isMatched = await bcrypt.compare(password,user.password)
             if(isMatched){
                 token = await user.generateAuthToken()
+                refreshToken = await user.generateRefreshToken(user._id)
                 user_id = user._id
-                await res.cookie('authToken',convertToBase64(token),{
-                    expires:new Date(Date.now()+(1000*60*3))
-                })
                 return res.status(200).json({
                     status:'success',
                     message:'Successfully logged in',
                     user_id:user_id,
-                    token:convertToBase64(token)
+                    token:convertToBase64(token),
+                    refreshToken:convertToBase64(refreshToken)
                 })
             }else{
-                return res.status(400).json({
+                return res.status(200).json({
                     status:'error',
                     message:'Credential not matched'
                 })
             }
             }
             else{
-                return res.status(400).json({
+                return res.status(200).json({
                     status:'error',
                     message:'Credential not matched'
                 })
