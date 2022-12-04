@@ -29,6 +29,7 @@ router.get('/transaction/:tran_id', authenticate ,transactionService.getData)
 router.post('/ledger/save', authenticate ,ledgerService.saveData)
 router.post('/ledger/list', authenticate ,ledgerService.listData)
 router.get('/ledger/:ledger_id', authenticate ,ledgerService.getData)
+router.get('/ledger/ledgerBalance/:ledger_id', authenticate ,ledgerService.getLedgerBalance)
 
 
 module.exports = router

@@ -1,7 +1,11 @@
 const mongoose = require('mongoose')
 
 const initializeDB = async function(){
-    const DB = process.env.DATABASE
+    let DB
+    if(process.env.PROFILE==='DEV')
+        DB = process.env.DATABASE_DEV
+    else
+    DB = process.env.DATABASE
     return new Promise((resolve,reject)=>{
         mongoose.connect(DB).then(()=>{
             console.log('DB Connected');

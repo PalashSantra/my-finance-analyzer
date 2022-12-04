@@ -1,5 +1,7 @@
 const Validator = require('validatorjs')
 const Ledger = require('../model/ledgerModel')
+const { Transaction } = require('../model/transactionModel')
+const ObjectId = require('mongoose').Types.ObjectId
 
 const validationRule = {
     'name': 'required',
@@ -104,8 +106,63 @@ const getData = async (req, res) => {
     }
 }
 
+const getLedgerBalance = async(req, res)=>{
+    try{
+        const ledger_id = req.params.ledger_id
+        let detailsTran
+        if(ledger_id){
+            detailsTran = await Transaction
+            .aggregate([
+                {
+                    $match: {
+                        'ledger._id' :new ObjectId(ledger_id)
+                    }
+                },
+                {
+                    $group: {
+                        _id: {ledger_id:"$ledger._id",ledger_name:"$ledger.name"},
+                        "sum": {$sum : "$cost.amount"}
+                    }
+                    
+                }
+            ]).allowDiskUse(true)
+        }else{
+            detailsTran = await Transaction
+            .aggregate([
+                {
+                    $group: {
+                        _id: {ledger_id:"$ledger._id",ledger_name:"$ledger.name"},
+                        "sum": {$sum : "$cost.amount"}
+                    }
+                    
+                }
+            ]).allowDiskUse(true)
+        }
+        const details = detailsTran.map(item=>{
+            return {
+                'ledger_id': item._id.ledger_id,
+                'ledger_name' : item._id.ledger_name,
+                'balance' : Math.abs(item.sum),
+                'balace_type' : item.sum>0? 'CR':'DR'
+            }
+        })
+        return res.status(200).json({
+            status: 'success',
+            message: 'ledger balance details fetched',
+            result: details
+        })
+    }catch(e){
+        console.log('ledger details fetching failed', e)
+        return res.status(500).json({
+            status: 'error',
+            message: 'Something went wrong'
+        })
+    }
+}
+
 module.exports = {
     saveData,
     listData,
-    getData
+    getData,
+    getLedgerBalance
 }
