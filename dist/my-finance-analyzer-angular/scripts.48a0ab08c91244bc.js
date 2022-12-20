@@ -1,0 +1,1 @@
+import{Chart as r,registerables as e}from"../dist/chart.js";r.register(...e);export*from"../dist/chart.js";export default r;
