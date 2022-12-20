@@ -108,19 +108,24 @@ const getData = async (req, res) => {
 
 const getLedgerBalance = async(req, res)=>{
     try{
-        const ledger_id = req.params.ledger_id
+        const {ledger_id,user_id} = req.body
         let detailsTran
         if(ledger_id){
             detailsTran = await Transaction
             .aggregate([
                 {
                     $match: {
-                        'ledger._id' :new ObjectId(ledger_id)
+                        'ledger._id' : new ObjectId(ledger_id),
+                        'user_id': user_id
                     }
                 },
                 {
                     $group: {
-                        _id: {ledger_id:"$ledger._id",ledger_name:"$ledger.name"},
+                        _id: {
+                                ledger_id:"$ledger._id",
+                                ledger_name:"$ledger.name",
+                                user_id:"$user_id"
+                        },
                         "sum": {$sum : "$cost.amount"}
                     }
                     
@@ -138,12 +143,13 @@ const getLedgerBalance = async(req, res)=>{
                 }
             ]).allowDiskUse(true)
         }
+        detadetailsTran = detailsTran.sort((a,b)=>a.sum<b.sum?1:-1)
         const details = detailsTran.map(item=>{
             return {
                 'ledger_id': item._id.ledger_id,
                 'ledger_name' : item._id.ledger_name,
                 'balance' : Math.abs(item.sum),
-                'balace_type' : item.sum>0? 'CR':'DR'
+                'balance_type' : item.sum>0? 'CR':'DR'
             }
         })
         return res.status(200).json({
