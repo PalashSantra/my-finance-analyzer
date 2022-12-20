@@ -27,6 +27,11 @@ const saveData = async (req, res) => {
             })
         }
         const inputData = req.body
+        if(inputData.tran_type==='DR') {
+            inputData.cost.amount = Number(inputData.cost.amount)*-1
+            if(inputData.cost.unit) 
+                inputData.cost.unit = Number(inputData.cost.unit)*-1
+        }
         dataExist = await Transaction.findOne({ 
             'tran_date': inputData.tran_date,
             'particulars' : inputData.particulars,
@@ -42,8 +47,6 @@ const saveData = async (req, res) => {
             })
         }
         transaction = new Transaction(inputData)
-        console.log('input data',inputData)
-        console.log('transaction',transaction)
         await transaction.save()
         return res.status(200).json({
             status: 'success',
@@ -68,6 +71,13 @@ const listData = async (req, res) => {
                             .skip((page-1)*pageSize)
                             .limit(pageSize)
             const docCount = await Transaction.find({'user_id':user_id}).count()
+            list.map(item=>{
+                const newItem = item;
+                if(item.tran_type==='DR'){
+                    newItem.cost.amount = Math.abs(newItem.cost.amount)
+                }
+                return newItem
+            })
             return res.status(200).json({
                 status: 'success',
                 message: 'all transaction data fetched',
